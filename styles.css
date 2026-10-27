@@ -163,3 +163,37 @@ ul.plain, ul.list { list-style: none; padding: 0; margin: 0.3rem 0; }
 .title { text-align: center; padding-top: 3rem; }
 .title h1 { font-size: 2.4rem; margin-bottom: 0; }
 .title .subtitle { color: var(--muted); margin-top: 0; }
+
+/* ---------- Slice 1b-i ---------- */
+
+/* Command buttons that are refused right now: greyed, reason in small text.
+   They stay tappable (aria-disabled) so the refusal is shown and logged. */
+button.blocked { opacity: 0.5; }
+button .reason { display: block; color: var(--danger); }
+button.cmd .muted { display: block; }
+
+.cando { margin: 0.4rem 0; padding: 0.4rem 0.6rem; border-left: 3px solid var(--accent); background: var(--panel); border-radius: 4px; }
+.warnline { color: var(--danger); font-weight: 600; }
+
+select {
+  font: inherit; color: var(--text); background: var(--bg);
+  border: 1px solid var(--border); border-radius: 8px;
+  min-height: 44px; width: 100%; padding: 0.4rem;
+}
+
+.pair { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+.hours { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.4rem; margin: 0.6rem 0; }
+
+.itemrow, .slot, .metric, .tune { padding: 0.4rem 0; border-bottom: 1px solid var(--border); }
+.itemrow .inline { margin: 0.2rem 0; }
+.itemrow .inline button { flex: 1 1 8rem; }
+
+.node .nodebody { padding: 0 0.5rem 0.5rem; }
+.node.locked > button { opacity: 0.75; }
+
+.metric .status { font-weight: 700; }
+.metric.ok .status { color: #5fae6a; }
+.metric.watch .status { color: var(--accent); }
+.metric.flag .status { color: var(--danger); }
+.metric.no-data .status { color: var(--muted); }
+.tune.changed label { color: var(--accent); }

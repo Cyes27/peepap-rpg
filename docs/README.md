@@ -3,36 +3,59 @@
 A phone-portrait, text-based cultivation RPG. Plain HTML, CSS and JavaScript
 (ES modules). No framework, no build step.
 
-Current build: **Slice 1a "Shell"**, version in `data/config.json`.
-The full brief is in [BUILD_BRIEF_SLICE1A.md](BUILD_BRIEF_SLICE1A.md).
+Current build: **Slice 1b-i "Core Loop"**, version in `data/config.json` (0.2.0).
+Briefs: [BUILD_BRIEF_SLICE1BI.md](BUILD_BRIEF_SLICE1BI.md) (this slice) and
+[BUILD_BRIEF_SLICE1A.md](BUILD_BRIEF_SLICE1A.md) (the shell it builds on).
 
 ## Folder layout
 
 ```
 index.html              The page. Loads styles.css and src/ui.js.
 styles.css              All styling (dark default, light theme, phone first).
-manifest.webmanifest    App name and colours (no service worker yet).
+manifest.webmanifest    App name and colours (no service worker).
 src/
-  ui.js       Entry point. Loads data, draws screens, handles taps. Only file that touches the page (DOM).
-  state.js    Builds a new save / new character; works out max HP, max Energy, unspent points, top attributes.
-  engine.js   Game rules: add attribute point, accept / abandon / switch quests, debug setters.
-  advice.js   Reads data/advice.json and returns the suggestions that apply right now.
-  save.js     localStorage (always inside try/catch), export / import codes, feedback notes.
+  ui.js         Entry point: loads data, restores the save, handles taps, logs sessions.
+  app.js        Shared UI state (save, event log, navigation) and helpers.
+  ui-game.js    In-game screens: Overview, Here, Bag, Storage, Rest, Me, Tree, Quests.
+  ui-system.js  Title, New Game, Settings, Save / Load, Metrics report, Tuning, Debug.
+  state.js      New game, migration of 1a games, derived values (max HP, carry kg,
+                bag weight, slots, clock), place helpers. Pure.
+  engine.js     Game rules: gather, eat, travel, rest, pass out / revive, research,
+                craft / build / cook, storage, XP, "what you can do now", debug. Pure.
+  advice.js     Reads data/advice.json and returns the suggestions that apply. Pure.
+  metrics.js    Turns the event log into the Metrics report (M1 to M15). Pure.
+  tuning.js     Builds the "world" (data + tuning overrides); Tuning panel ranges. Pure.
+  save.js       localStorage (always inside try/catch): autosave, slots, export /
+                import, migration, notes, small JSON values.
 data/
-  config.json      Version, start values, formulas, limits, UI options.
+  config.json      Version, start values, formulas, costs, limits, UI options.
   attributes.json  The 6 attributes.
-  skills.json      5 skill groups and 26 skills (open or locked).
+  skills.json      Skill groups and skills (open or locked) with attribute XP splits.
   places.json      Places (hub, points of interest, areas), people and things.
-  quests.json      Quests (9 dummy quests for now).
+  items.json       Items: food, materials, tools.
+  actions.json     Gathering actions at areas.
+  nodes.json       Research nodes (the Tree tab).
+  recipes.json     Craft, build and cook recipes.
   advice.json      Planning suggestions and when they appear.
+  quests.json      Quests (dummy quests for now).
+  typeLabels.json  Friendly labels for item kinds and thing types.
+  metrics.json     Model values and bands for the Metrics report.
 docs/
-  README.md                 This file.
-  BUILD_BRIEF_SLICE1A.md    Copy of the Slice 1a brief.
+  README.md                  This file.
+  BUILD_BRIEF_SLICE1A.md     Copy of the Slice 1a brief.
+  BUILD_BRIEF_SLICE1BI.md    Copy of the Slice 1b-i brief.
+tests/
+  engine.test.mjs  Node tests for the rules (not part of the shipped site).
 ```
 
 Rule of thumb: **content lives in `data/*.json`, logic lives in `src/`.**
-`engine.js`, `state.js` and `advice.js` never touch the page; `ui.js` draws
-everything from the state.
+`engine.js`, `state.js`, `advice.js`, `metrics.js` and `tuning.js` never touch
+the page; `ui*.js` draw everything from the state.
+
+Every engine command takes `(state, W, ...)` and returns
+`{ state, ok, reason, messages, events }` with a NEW state, so the rules can
+be tested without a browser. `W` is the "world": the config and all data
+files, with any tuning overrides applied.
 
 ## How to test
 
@@ -49,58 +72,121 @@ from your phone or by double-clicking the file (`file://`). Use one of these:
 
 If you see "Could not load game data", you are probably on `file://`.
 
-The save lives in your browser's localStorage under `peepap_save`; feedback
-notes under `peepap_notes`. Settings > Reset save wipes the save.
+**Rule tests** (needs Node 18 or newer), from the project folder:
+```
+node --test tests/engine.test.mjs
+```
+
+### What is stored in the browser (localStorage)
+
+| Key | What |
+|---|---|
+| `peepap_save` | Autosave (after every tap and when the page is hidden) |
+| `peepap_slot1` to `peepap_slot3` | Manual save slots (Settings > Save / Load) |
+| `peepap_events` | Playtest event log, last 5,000 events (Settings > Metrics report) |
+| `peepap_tuning` | Tuning panel overrides |
+| `peepap_notes` | "Note this" feedback |
+
+Settings > Reset save wipes the autosave only. Settings > Metrics report >
+Reset metrics wipes the event log.
 
 ## How to add content by editing JSON
 
 Keep the JSON valid (commas between items, double quotes). Reload the page
 after saving the file. Use a JSON checker if the game stops loading.
+`id` values must be unique, lowercase, no spaces.
 
-### Add a place
+### Add an item
 
-Add an object to `"places"` in `data/places.json`.
+Add an object to `data/items.json`. `kind` is `food`, `resource` or `tool`
+(the label shown comes from `data/typeLabels.json`).
+```json
+{"id":"mushroom","name":"Mushroom","kind":"food","weightKg":0.1,"stack":20,"hunger":4,"blurb":"Earthy. Probably safe."}
+```
+- Food needs `"hunger"` (how much Hunger one restores).
+- Tools need `"toolType"` (e.g. `"axe"`) and `"tier"` (a key of
+  `energy.toolCost` in config.json, e.g. `"stone"`). Carrying a tool in the
+  bag is enough; the cheapest tool of the right type is used.
 
-- A **point of interest** inside Greywillow (shows under Here > Places):
+### Add a gathering action
+
+Add an object to `data/actions.json`. `at` is the place id where it shows.
+```json
+{"id":"pick_mushrooms","name":"Pick mushrooms","at":"forest_edge","skill":"foraging","taskLevel":1,"yield":{"mushroom":2}}
+```
+- `"toolType":"axe"` makes an axe in the bag lower the Energy cost.
+- `"toolRequired":true` refuses the action without that tool.
+- Cost: `energy.baseActionCost` (or the tool's cost), `time.actionMinutes`.
+  XP: `xp.skillPerTaskLevel x taskLevel` to the skill, and
+  `xp.attrPerTaskLevel x taskLevel` split over attributes by the skill's
+  `split` in skills.json.
+
+### Add a recipe (craft, build or cook)
+
+Add an object to `data/recipes.json`.
+```json
+{"id":"stone_knife","name":"Stone Knife","kind":"craft","skill":"carpentry","taskLevel":1,"actions":1,"inputs":{"stick":1,"loose_stone":1},"outputs":{"stone_knife":1},"needsNode":"stone_tools"}
+```
+- `kind`: `craft` (anywhere), `build` (only at `"at"`), `cook` (at `"at"`
+  and needs `"station"`, e.g. `"fire_pit"` = `built.fire_pit` is true).
+- `needsNode`: the research node that must be done first.
+- Builds use `"sets"` instead of outputs, e.g. `{"built.fire_pit":true}` or
+  `{"homeShelter":"tent"}`, plus `"once":true` to allow building only once.
+- Cost: `actions x (energy.baseActionCost Energy and time.actionMinutes)`.
+- At the Hut, recipes use bag + storage together.
+- Also add the recipe id to the `unlocks` list of its node (shown in Tree).
+
+### Add a research node
+
+Add an object to `data/nodes.json`:
+```json
+{"id":"knapping","name":"Knapping","requires":{"nodes":["stone_tools"],"skills":{"mining":2}},"actions":2,"unlocks":["stone_knife"]}
+```
+`"start":true` makes it done from the beginning. `"lockedInSlice":true` with a
+`"lockNote"` shows it locked.
+
+### Add a planning suggestion (advice rule)
+
+Add a rule to `data/advice.json`. `horizon` is `immediate`, `short`,
+`medium` or `long`. Rule types:
+- `meterBelow`: `{"type":"meterBelow","meter":"energy","configKey":"lowEnergyBelow"}`
+  (the threshold lives in `config.json` under `advice`).
+- `carryAbove`: `{"type":"carryAbove","configKey":"bagFullFraction"}` (bag
+  weight / carry kg above that fraction).
+- `hasNoItem`: `{"type":"hasNoItem","item":"stone_axe"}` (none in the bag).
+- `stateEquals`: `{"type":"stateEquals","key":"built.fire_pit","value":false}`
+  (dotted keys reach inside the game state).
+
+### Add a place, person, thing or quest
+
+- **Point of interest** inside Greywillow (Here > Places; walking there is free):
   ```json
   {"id":"shrine","name":"Small Shrine","kind":"poi","parent":"greywillow","blurb":"...","exits":[],"activities":["Pray"]}
   ```
-- An **area** you can go to (shows under Here > Go to): add the area with
+- **Area** (10 minutes and 1 Energy from Greywillow): add it with
   `"kind":"area"` and `"parent":"greywillow"`, then add an exit to it in
   Greywillow's `"exits"` list, e.g. `{"to":"shrine_path","minutes":10}`.
+- `"revival": true` marks the Revival Point (only the Hut now).
+- **Person** (`"people"` in places.json, `"at"` = a point of interest):
+  `{"id":"herbalist","name":"Herbalist","role":"villager","at":"well","placeholderName":true}`
+- **Thing** (`"things"`): `{"id":"old_bench","name":"Old Bench","type":"station","at":"campfire"}`
+- **Quest** (data/quests.json): `{"id":"q10","title":"New Quest","horizon":"short","summary":"What to do.","abandonable":true}`
 
-`id` must be unique, lowercase, no spaces.
+Place activities (the text list in places.json) with no live action yet show
+greyed "coming in 1b-ii". The list of activities that are live is
+`LIVE_ACTIVITIES` in `src/ui-game.js`.
 
-### Add a person
+## Metrics (Tier A)
 
-Add an object to `"people"` in `data/places.json`. `"at"` is the id of the
-point of interest where they stand:
-```json
-{"id":"herbalist","name":"Herbalist","role":"villager","at":"well","placeholderName":true}
-```
-Set `"placeholderName": true` if the name is a stand-in to rename later.
+The game logs events locally (`peepap_events`) and Settings > Metrics report
+turns them into M1 to M15 against the models and bands in
+`data/metrics.json`. Copy report gives plain text for pasting into chat.
+Debug actions are excluded; sessions with an XP multiplier or tuning
+overrides are marked "tuned". Exact definitions are in `src/metrics.js`.
 
-### Add a thing
-
-Add to `"things"` in `data/places.json`:
-```json
-{"id":"old_bench","name":"Old Bench","type":"station","at":"campfire"}
-```
-
-### Add a quest
-
-Add an object to `data/quests.json`. `horizon` is one of `immediate`,
-`short`, `medium`, `long`:
-```json
-{"id":"q10","title":"New Quest","horizon":"short","summary":"What to do.","abandonable":true}
-```
-
-### Add a planning suggestion
-
-Add a rule to `data/advice.json`. Two rule types exist:
-- `meterBelow`: `{"type":"meterBelow","meter":"energy","configKey":"lowEnergyBelow"}`
-  (the threshold number lives in `config.json` under `advice`).
-- `stateEquals`: `{"type":"stateEquals","key":"tool","value":"none"}`.
+The Tuning panel (Settings > Tuning panel) changes a fixed list of config
+numbers within allowed ranges (`TUNING_FIELDS` in `src/tuning.js`). Each
+set of changes gets a `tuningSetId`; "default" means untouched.
 
 ## Each build
 
