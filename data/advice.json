@@ -1,0 +1,6 @@
+[
+ {"id":"hungry","when":{"type":"meterBelow","meter":"hunger","configKey":"hungryBelow"},"text":"You are hungry. Find something to eat.","horizon":"immediate"},
+ {"id":"low_energy","when":{"type":"meterBelow","meter":"energy","configKey":"lowEnergyBelow"},"text":"Energy is low. Rest before you act.","horizon":"immediate"},
+ {"id":"no_tool","when":{"type":"stateEquals","key":"tool","value":"none"},"text":"You have only bare hands. A stone tool would help.","horizon":"short"},
+ {"id":"ground_bed","when":{"type":"stateEquals","key":"shelter","value":"ground"},"text":"You sleep on the ground. A tent would help you rest.","horizon":"medium"}
+]

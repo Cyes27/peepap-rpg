@@ -1,0 +1,11 @@
+[
+ {"id":"q01","title":"Dummy Quest 1","horizon":"immediate","summary":"Placeholder quest for testing the Quests screen.","abandonable":true},
+ {"id":"q02","title":"Dummy Quest 2","horizon":"short","summary":"Placeholder quest for testing the Quests screen.","abandonable":true},
+ {"id":"q03","title":"Dummy Quest 3","horizon":"medium","summary":"Placeholder quest for testing the Quests screen.","abandonable":true},
+ {"id":"q04","title":"Dummy Quest 4","horizon":"long","summary":"Placeholder quest for testing the Quests screen.","abandonable":true},
+ {"id":"q05","title":"Dummy Quest 5","horizon":"immediate","summary":"Placeholder quest for testing the Quests screen.","abandonable":true},
+ {"id":"q06","title":"Dummy Quest 6","horizon":"short","summary":"Placeholder quest for testing the Quests screen.","abandonable":true},
+ {"id":"q07","title":"Dummy Quest 7","horizon":"medium","summary":"Placeholder quest for testing the Quests screen.","abandonable":true},
+ {"id":"q08","title":"Dummy Quest 8","horizon":"long","summary":"Placeholder quest for testing the Quests screen.","abandonable":true},
+ {"id":"q09","title":"Dummy Quest 9","horizon":"immediate","summary":"Placeholder quest for testing the Quests screen.","abandonable":true}
+]

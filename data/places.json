@@ -1,0 +1,31 @@
+{"startPlace":"greywillow",
+"places":[
+ {"id":"greywillow","name":"Greywillow","kind":"hub","parent":null,"recommendedLevel":1,"blurb":"A poor village of the Mo Clan.","exits":[{"to":"forest_edge","minutes":10},{"to":"stone_pile","minutes":10},{"to":"stream","minutes":10},{"to":"village_fields","minutes":10}],"activities":[]},
+ {"id":"hut","name":"Your Hut","kind":"poi","parent":"greywillow","blurb":"Sleep on the ground, storage. Where your backstory starts.","exits":[],"activities":["Sleep on the ground","Use storage"]},
+ {"id":"clan_hall","name":"Clan Hall","kind":"poi","parent":"greywillow","blurb":"Elder Mo, the main quest board, the clan record. The Training Post is in the yard.","exits":[],"activities":["Talk to Elder Mo","Read the quest board","Train at the Training Post"]},
+ {"id":"stall","name":"Village Stall","kind":"poi","parent":"greywillow","blurb":"Buy and sell.","exits":[],"activities":["Buy","Sell"]},
+ {"id":"campfire","name":"Campfire Spot","kind":"poi","parent":"greywillow","blurb":"Cooking and rest station. Villagers gather here.","exits":[],"activities":["Cook","Rest"]},
+ {"id":"well","name":"Old Well","kind":"poi","parent":"greywillow","blurb":"Water and gossip.","exits":[],"activities":["Fetch water","Listen to gossip"]},
+ {"id":"tavern","name":"Small Tavern","kind":"poi","parent":"greywillow","blurb":"Open until 22:00. A message board with odd jobs.","exits":[],"activities":["Talk to guests","Read the message board"]},
+ {"id":"forest_edge","name":"Forest Edge","kind":"area","parent":"greywillow","recommendedLevel":1,"blurb":"Forage, sticks, small logs. The first enemy comes in Slice 1c.","exits":[{"to":"greywillow","minutes":10}],"activities":["Forage","Gather sticks and small logs"]},
+ {"id":"stone_pile","name":"Stone Pile","kind":"area","parent":"greywillow","recommendedLevel":1,"blurb":"Loose stones, soft stone.","exits":[{"to":"greywillow","minutes":10}],"activities":["Gather stones"]},
+ {"id":"stream","name":"Stream","kind":"area","parent":"greywillow","recommendedLevel":1,"blurb":"Fetch water. Fishing unlocks later.","exits":[{"to":"greywillow","minutes":10}],"activities":["Fetch water"]},
+ {"id":"village_fields","name":"Village Fields","kind":"area","parent":"greywillow","recommendedLevel":1,"blurb":"Odd jobs for clansfolk (small pay). Farming later.","exits":[{"to":"greywillow","minutes":10}],"activities":["Do odd jobs"]}
+],
+"people":[
+ {"id":"elder_mo","name":"Elder Mo","role":"quest_giver","at":"clan_hall","placeholderName":false},
+ {"id":"clan_guard","name":"Clan Guard","role":"guard (teaches basics later)","at":"clan_hall","placeholderName":true},
+ {"id":"stall_keeper","name":"Stall Keeper","role":"shopkeeper","at":"stall","placeholderName":true},
+ {"id":"water_carrier","name":"Water Carrier","role":"villager","at":"well","placeholderName":true},
+ {"id":"tavern_keeper","name":"Tavern Keeper","role":"shopkeeper","at":"tavern","placeholderName":true},
+ {"id":"traveler","name":"Traveler","role":"guest (hints at the outside world)","at":"tavern","placeholderName":true}
+],
+"things":[
+ {"id":"storage","name":"Storage","type":"storage","at":"hut"},
+ {"id":"quest_board","name":"Quest Board","type":"board","at":"clan_hall"},
+ {"id":"clan_record","name":"Clan Record","type":"lore","at":"clan_hall"},
+ {"id":"training_post","name":"Training Post","type":"station","at":"clan_hall"},
+ {"id":"campfire_station","name":"Campfire","type":"station","at":"campfire"},
+ {"id":"well_water","name":"Well Water","type":"resource","at":"well"},
+ {"id":"message_board","name":"Message Board","type":"board","at":"tavern"}
+]}
