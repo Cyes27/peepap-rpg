@@ -1,0 +1,10 @@
+{
+  "name": "Peepap - The RPG",
+  "short_name": "Peepap",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#14161a",
+  "theme_color": "#14161a"
+}

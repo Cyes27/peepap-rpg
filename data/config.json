@@ -1,0 +1,9 @@
+{"version":"0.1.0","saveKey":"peepap_save","notesKey":"peepap_notes","saveVersion":1,
+"start":{"day":1,"time":"06:00","money":20,"energy":60,"hunger":50,"shelter":"ground","tool":"none"},
+"meters":{"hpBase":40,"hpPerVit":5,"energyBase":80,"energyPerVit":3,"hungerMax":100,"carryBaseKg":10,"carryPerStr":1},
+"creation":{"freePoints":10,"maxPerAttrFromFree":4},
+"quests":{"maxAccepted":8},
+"xp":{"skillBase":40,"attrBase":30,"exponent":1.5,"skillPerTaskLevel":10,"attrPerTaskLevel":3,"multiplier":1},
+"advice":{"hungryBelow":60,"lowEnergyBelow":30},
+"placeholders":{"travelMinutes":10,"recommendedLevel":1},
+"ui":{"textSizes":[14,16,18,20],"defaultTextSize":16,"defaultTheme":"dark"}}

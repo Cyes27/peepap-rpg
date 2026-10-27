@@ -1,0 +1,8 @@
+[
+ {"id":"strength","name":"Strength","drives":"melee damage, carry weight, chopping/mining power"},
+ {"id":"vitality","name":"Vitality","drives":"max HP, max Energy, defense, hunger resistance, rest recovery"},
+ {"id":"agility","name":"Agility","drives":"dodge, action speed, travel time, ranged accuracy"},
+ {"id":"perception","name":"Perception","drives":"crit chance, rare finds when foraging, spotting ambushes, extra lore"},
+ {"id":"intellect","name":"Intellect","drives":"crafting quality, research/learning speed, recipe discovery, trade pricing"},
+ {"id":"spirit","name":"Spirit","drives":"Qi capacity (later), cultivation speed, rest efficiency, willpower in dialogue"}
+]
