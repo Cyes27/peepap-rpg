@@ -1,0 +1,7 @@
+[{"id":"pick_berries","name":"Pick berries","at":"forest_edge","skill":"foraging","taskLevel":1,"yield":{"berries":2}},
+{"id":"dig_roots","name":"Dig roots","at":"forest_edge","skill":"foraging","taskLevel":1,"yield":{"wild_roots":2}},
+{"id":"gather_sticks","name":"Gather sticks","at":"forest_edge","skill":"woodcutting","taskLevel":1,"yield":{"stick":4},"toolType":"axe"},
+{"id":"chop_log","name":"Chop small log","at":"forest_edge","skill":"woodcutting","taskLevel":1,"yield":{"small_log":1},"toolType":"axe","toolRequired":true},
+{"id":"gather_stones","name":"Gather loose stones","at":"stone_pile","skill":"mining","taskLevel":1,"yield":{"loose_stone":3},"toolType":"pickaxe"},
+{"id":"mine_soft_stone","name":"Mine soft stone","at":"stone_pile","skill":"mining","taskLevel":1,"yield":{"soft_stone":1},"toolType":"pickaxe","toolRequired":true},
+{"id":"cut_reeds","name":"Cut reeds","at":"stream","skill":"foraging","taskLevel":1,"yield":{"reed_bundle":2}}]

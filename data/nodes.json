@@ -1,0 +1,8 @@
+[{"id":"foraging","name":"Foraging","state":"done","start":true,"requires":{},"actions":0,"unlocks":[]},
+{"id":"woodcutting","name":"Woodcutting","state":"done","start":true,"requires":{},"actions":0,"unlocks":[]},
+{"id":"mining","name":"Mining","state":"done","start":true,"requires":{},"actions":0,"unlocks":[]},
+{"id":"stone_tools","name":"Stone Tools","requires":{"skills":{"woodcutting":1,"mining":1}},"actions":2,"unlocks":["stone_axe","stone_pickaxe"]},
+{"id":"fire_making","name":"Fire-making","requires":{"skills":{"foraging":1}},"actions":1,"unlocks":["fire_pit"]},
+{"id":"cooking","name":"Cooking","requires":{"nodes":["fire_making"]},"actions":1,"unlocks":["roast_roots"]},
+{"id":"tent_building","name":"Tent-building","requires":{"nodes":["stone_tools"],"skills":{"woodcutting":2}},"actions":3,"unlocks":["tent"]},
+{"id":"lean_to","name":"Lean-to","requires":{"nodes":["tent_building"],"skills":{"woodcutting":4}},"actions":4,"unlocks":[],"lockedInSlice":true,"lockNote":"Comes in a later slice"}]

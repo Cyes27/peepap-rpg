@@ -1,0 +1,10 @@
+[{"id":"berries","name":"Wild Berries","kind":"food","weightKg":0.1,"stack":20,"hunger":6,"blurb":"Small, sweet, not very filling."},
+{"id":"wild_roots","name":"Wild Roots","kind":"food","weightKg":0.3,"stack":20,"hunger":5,"blurb":"Bitter when raw. Much better roasted."},
+{"id":"roast_roots","name":"Roast Roots","kind":"food","weightKg":0.3,"stack":20,"hunger":25,"blurb":"Warm and filling."},
+{"id":"stick","name":"Stick","kind":"resource","weightKg":0.2,"stack":20,"blurb":"Dry wood. Useful for almost everything."},
+{"id":"loose_stone","name":"Loose Stone","kind":"resource","weightKg":1,"stack":20,"blurb":"A fist-sized stone."},
+{"id":"soft_stone","name":"Soft Stone","kind":"resource","weightKg":2,"stack":20,"blurb":"Needs a pickaxe. No use yet."},
+{"id":"small_log","name":"Small Log","kind":"resource","weightKg":2,"stack":20,"blurb":"Needs an axe to cut."},
+{"id":"reed_bundle","name":"Reed Bundle","kind":"resource","weightKg":0.2,"stack":20,"blurb":"Cut at the stream. Binds and roofs."},
+{"id":"stone_axe","name":"Stone Axe","kind":"tool","weightKg":1.5,"stack":1,"toolType":"axe","tier":"stone","blurb":"Cheaper wood work. Needed for logs."},
+{"id":"stone_pickaxe","name":"Stone Pickaxe","kind":"tool","weightKg":2,"stack":1,"toolType":"pickaxe","tier":"stone","blurb":"Cheaper stone work. Needed for soft stone."}]

@@ -1,6 +1,7 @@
-[
- {"id":"hungry","when":{"type":"meterBelow","meter":"hunger","configKey":"hungryBelow"},"text":"You are hungry. Find something to eat.","horizon":"immediate"},
- {"id":"low_energy","when":{"type":"meterBelow","meter":"energy","configKey":"lowEnergyBelow"},"text":"Energy is low. Rest before you act.","horizon":"immediate"},
- {"id":"no_tool","when":{"type":"stateEquals","key":"tool","value":"none"},"text":"You have only bare hands. A stone tool would help.","horizon":"short"},
- {"id":"ground_bed","when":{"type":"stateEquals","key":"shelter","value":"ground"},"text":"You sleep on the ground. A tent would help you rest.","horizon":"medium"}
-]
+[{"id":"starving","when":{"type":"meterBelow","meter":"hunger","configKey":"starvingBelow"},"text":"You are starving. Eat now or you may pass out.","horizon":"immediate"},
+{"id":"hungry","when":{"type":"meterBelow","meter":"hunger","configKey":"hungryBelow"},"text":"You are hungry. Pick berries or dig roots at the Forest Edge.","horizon":"immediate"},
+{"id":"low_energy","when":{"type":"meterBelow","meter":"energy","configKey":"lowEnergyBelow"},"text":"Energy is low. Rest soon.","horizon":"immediate"},
+{"id":"bag_full","when":{"type":"carryAbove","configKey":"bagFullFraction"},"text":"Your bag is nearly full. Store items at your Hut.","horizon":"immediate"},
+{"id":"no_axe","when":{"type":"hasNoItem","item":"stone_axe"},"text":"No stone axe. Research Stone Tools in the Tree tab, then craft one.","horizon":"short"},
+{"id":"no_fire","when":{"type":"stateEquals","key":"built.fire_pit","value":false},"text":"No fire pit. Research Fire-making, then build one at the Campfire Spot.","horizon":"short"},
+{"id":"ground_bed","when":{"type":"stateEquals","key":"homeShelter","value":"ground"},"text":"You sleep on the ground. A tent at your Hut helps you rest faster.","horizon":"medium"}]

@@ -1,7 +1,9 @@
 // save.js
-// Saving, loading, export and import. Every localStorage call is wrapped
-// in try/catch: if storage is blocked (private mode, file://, etc.) the
-// game still runs, it just cannot remember anything.
+// Saving, loading, slots, export and import, notes and tuning overrides.
+// Every localStorage call is wrapped in try/catch: if storage is blocked
+// (private mode, file://, full) the game still runs.
+
+import { upgradeGameV1, dayTime } from "./state.js";
 
 const EXPORT_PREFIX = "PEEPAP1:";
 
@@ -17,39 +19,74 @@ export function storageAvailable() {
   }
 }
 
-export function readSave(config) {
+// Upgrade an old save to the current saveVersion, one step at a time.
+// Throws an Error with a readable message if the save cannot be used.
+export function migrate(save, W, now = Date.now()) {
+  if (!save || typeof save !== "object" || typeof save.saveVersion !== "number") {
+    throw new Error("This is not a Peepap save.");
+  }
+  const v = save.saveVersion;
+  if (!Number.isInteger(v) || v < 1 || v > W.config.saveVersion) {
+    throw new Error(`This save is version ${v}; this game reads versions 1 to ${W.config.saveVersion}.`);
+  }
+  if (save.saveVersion === 1) {
+    // Slice 1a -> 1b-i: inventory, storage, built, shelter, research, XP, time.
+    if (save.game) save.game = upgradeGameV1(save.game, W, now);
+    save.saveVersion = 2;
+  }
+  if (!save.settings) save.settings = { textSize: W.config.ui.defaultTextSize, theme: W.config.ui.defaultTheme };
+  if (!save.screen) save.screen = { name: "title", params: {} };
+  return save;
+}
+
+// Read a save from a key. Returns { ok: true, save } (save is null when
+// the key is empty) or { ok: false, message }.
+export function readKey(W, key) {
+  let text;
   try {
-    const text = localStorage.getItem(config.saveKey);
-    if (!text) return null;
-    return migrate(JSON.parse(text), config);
+    text = localStorage.getItem(key);
   } catch (e) {
-    return null; // missing, blocked or broken: start fresh
+    return { ok: false, message: "Storage is unavailable." };
+  }
+  if (!text) return { ok: true, save: null };
+  try {
+    return { ok: true, save: migrate(JSON.parse(text), W) };
+  } catch (e) {
+    return { ok: false, message: e instanceof SyntaxError ? "The save is damaged." : e.message };
   }
 }
 
-export function writeSave(config, save) {
+// Write a save. Returns false if storage is full or unavailable.
+export function writeKey(key, save) {
   try {
-    localStorage.setItem(config.saveKey, JSON.stringify(save));
+    localStorage.setItem(key, JSON.stringify(save));
     return true;
   } catch (e) {
     return false;
   }
 }
 
-export function clearSave(config) {
+export function clearKey(key) {
   try {
-    localStorage.removeItem(config.saveKey);
+    localStorage.removeItem(key);
   } catch (e) {
     /* nothing to do */
   }
 }
 
-// Migration stub. When saveVersion goes up, old saves get upgraded here,
-// one step at a time, e.g. if (save.saveVersion === 1) { ...; save.saveVersion = 2; }
-export function migrate(save, config) {
-  if (!save || typeof save !== "object") throw new Error("Not a save.");
-  if (save.saveVersion > config.saveVersion) throw new Error("Save is from a newer version.");
-  return save;
+// One line for the Save / Load list: name, Day and time, version, real date.
+export function slotSummary(W, key) {
+  const r = readKey(W, key);
+  if (!r.ok) return { empty: false, error: r.message };
+  if (!r.save || !r.save.game) return { empty: true };
+  const g = r.save.game;
+  return {
+    empty: false,
+    name: g.name,
+    when: dayTime(W.config, g),
+    version: r.save.gameVersion || "0.1.0",
+    savedAt: r.save.savedAt ? new Date(r.save.savedAt).toLocaleString() : "unknown date",
+  };
 }
 
 // ----- Export / import -----
@@ -72,8 +109,8 @@ export function exportCode(save) {
   return EXPORT_PREFIX + toBase64(JSON.stringify(save));
 }
 
-// Returns { ok: true, save } or { ok: false, message }.
-export function importCode(config, code) {
+// Accepts saveVersion 1 or 2 (1 is upgraded). Returns { ok, save } or { ok: false, message }.
+export function importCode(W, code) {
   code = (code || "").trim();
   if (!code.startsWith(EXPORT_PREFIX)) {
     return { ok: false, message: "Not a Peepap save code (it must start with PEEPAP1:)." };
@@ -84,39 +121,42 @@ export function importCode(config, code) {
   } catch (e) {
     return { ok: false, message: "The save code is damaged or incomplete." };
   }
-  if (!save || typeof save.saveVersion !== "number") {
-    return { ok: false, message: "The save code has no save version." };
-  }
-  if (save.saveVersion > config.saveVersion) {
-    return { ok: false, message: `This save is version ${save.saveVersion}; this game reads up to ${config.saveVersion}.` };
-  }
-  if (!save.settings || !("game" in save)) {
-    return { ok: false, message: "The save code is missing parts." };
-  }
+  if (!save || !("game" in save)) return { ok: false, message: "The save code is missing parts." };
   try {
-    return { ok: true, save: migrate(save, config) };
+    return { ok: true, save: migrate(save, W) };
   } catch (e) {
     return { ok: false, message: e.message };
+  }
+}
+
+// ----- Small JSON values (notes, tuning, events) -----
+
+export function readJson(key, fallback) {
+  try {
+    const v = JSON.parse(localStorage.getItem(key));
+    return v == null ? fallback : v;
+  } catch (e) {
+    return fallback;
+  }
+}
+
+export function writeJson(key, value) {
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+    return true;
+  } catch (e) {
+    return false;
   }
 }
 
 // ----- Feedback notes ("note this") -----
 
 export function readNotes(config) {
-  try {
-    return JSON.parse(localStorage.getItem(config.notesKey)) || [];
-  } catch (e) {
-    return [];
-  }
+  return readJson(config.notesKey, []);
 }
 
 export function addNote(config, note) {
   const notes = readNotes(config);
   notes.push(note);
-  try {
-    localStorage.setItem(config.notesKey, JSON.stringify(notes));
-    return true;
-  } catch (e) {
-    return false;
-  }
+  return writeJson(config.notesKey, notes);
 }

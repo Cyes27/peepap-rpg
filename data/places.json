@@ -1,7 +1,7 @@
 {"startPlace":"greywillow",
 "places":[
  {"id":"greywillow","name":"Greywillow","kind":"hub","parent":null,"recommendedLevel":1,"blurb":"A poor village of the Mo Clan.","exits":[{"to":"forest_edge","minutes":10},{"to":"stone_pile","minutes":10},{"to":"stream","minutes":10},{"to":"village_fields","minutes":10}],"activities":[]},
- {"id":"hut","name":"Your Hut","kind":"poi","parent":"greywillow","blurb":"Sleep on the ground, storage. Where your backstory starts.","exits":[],"activities":["Sleep on the ground","Use storage"]},
+ {"id":"hut","name":"Your Hut","kind":"poi","parent":"greywillow","revival":true,"blurb":"Sleep on the ground, storage. Where your backstory starts.","exits":[],"activities":["Sleep on the ground","Use storage"]},
  {"id":"clan_hall","name":"Clan Hall","kind":"poi","parent":"greywillow","blurb":"Elder Mo, the main quest board, the clan record. The Training Post is in the yard.","exits":[],"activities":["Talk to Elder Mo","Read the quest board","Train at the Training Post"]},
  {"id":"stall","name":"Village Stall","kind":"poi","parent":"greywillow","blurb":"Buy and sell.","exits":[],"activities":["Buy","Sell"]},
  {"id":"campfire","name":"Campfire Spot","kind":"poi","parent":"greywillow","blurb":"Cooking and rest station. Villagers gather here.","exits":[],"activities":["Cook","Rest"]},

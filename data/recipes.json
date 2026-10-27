@@ -1,0 +1,5 @@
+[{"id":"stone_axe","name":"Stone Axe","kind":"craft","skill":"carpentry","taskLevel":1,"actions":1,"inputs":{"stick":2,"loose_stone":2},"outputs":{"stone_axe":1},"needsNode":"stone_tools"},
+{"id":"stone_pickaxe","name":"Stone Pickaxe","kind":"craft","skill":"carpentry","taskLevel":1,"actions":1,"inputs":{"stick":2,"loose_stone":3},"outputs":{"stone_pickaxe":1},"needsNode":"stone_tools"},
+{"id":"fire_pit","name":"Fire Pit","kind":"build","skill":"carpentry","taskLevel":1,"actions":2,"inputs":{"loose_stone":5,"stick":3},"sets":{"built.fire_pit":true},"at":"campfire","needsNode":"fire_making","once":true},
+{"id":"tent","name":"Tent","kind":"build","skill":"carpentry","taskLevel":1,"actions":4,"inputs":{"small_log":3,"stick":6,"reed_bundle":4},"sets":{"homeShelter":"tent"},"at":"hut","needsNode":"tent_building","once":true,"useStorage":true},
+{"id":"roast_roots","name":"Roast Roots","kind":"cook","skill":"cooking","taskLevel":1,"actions":1,"inputs":{"wild_roots":2,"stick":1},"outputs":{"roast_roots":2},"station":"fire_pit","at":"campfire","needsNode":"cooking"}]

@@ -1,9 +1,1 @@
-{"version":"0.1.0","saveKey":"peepap_save","notesKey":"peepap_notes","saveVersion":1,
-"start":{"day":1,"time":"06:00","money":20,"energy":60,"hunger":50,"shelter":"ground","tool":"none"},
-"meters":{"hpBase":40,"hpPerVit":5,"energyBase":80,"energyPerVit":3,"hungerMax":100,"carryBaseKg":10,"carryPerStr":1},
-"creation":{"freePoints":10,"maxPerAttrFromFree":4},
-"quests":{"maxAccepted":8},
-"xp":{"skillBase":40,"attrBase":30,"exponent":1.5,"skillPerTaskLevel":10,"attrPerTaskLevel":3,"multiplier":1},
-"advice":{"hungryBelow":60,"lowEnergyBelow":30},
-"placeholders":{"travelMinutes":10,"recommendedLevel":1},
-"ui":{"textSizes":[14,16,18,20],"defaultTextSize":16,"defaultTheme":"dark"}}
+{"version":"0.2.0","saveKey":"peepap_save","slotKeys":["peepap_slot1","peepap_slot2","peepap_slot3"],"eventsKey":"peepap_events","tuningKey":"peepap_tuning","notesKey":"peepap_notes","saveVersion":2,"start":{"day":1,"time":"06:00","money":20,"energy":60,"hunger":50,"homeShelter":"ground","revivalPlace":"hut"},"meters":{"hpBase":40,"hpPerVit":5,"energyBase":80,"energyPerVit":3,"hungerMax":100,"carryBaseKg":10,"carryPerStr":1},"creation":{"freePoints":10,"maxPerAttrFromFree":4},"quests":{"maxAccepted":8},"xp":{"skillBase":40,"attrBase":30,"exponent":1.5,"skillPerTaskLevel":10,"attrPerTaskLevel":3,"multiplier":1},"time":{"actionMinutes":10,"travelMinutes":10,"eatMinutes":5},"energy":{"baseActionCost":4,"toolCost":{"none":4,"stone":3,"copper":2.5,"iron":2},"travelCost":1,"eatCost":0},"rest":{"hoursToFull":{"ground":8,"tent":6,"lean_to":5,"house_bed":4},"minHours":1,"maxHours":8,"groundLocked":true,"fullNightMinHunger":16},"hunger":{"perHourAwake":4,"restFactor":0.5},"revival":{"passOutHours":8,"wakeEnergy":40,"wakeHunger":20},"inventory":{"bagSlots":12,"stack":20,"storageSlots":40},"advice":{"hungryBelow":40,"starvingBelow":10,"lowEnergyBelow":30,"bagFullFraction":0.9},"metrics":{"maxEvents":5000,"idleGapSec":30,"minSamples":3},"eatUntilHunger":80,"ui":{"textSizes":[14,16,18,20],"defaultTextSize":16,"defaultTheme":"dark"}}
